@@ -1,0 +1,179 @@
+LIS464_query_Gao.txt
+
+//from SQL
+
+CREATE VIEW ActorMovie AS 
+SELECT ActorFirstName AS FirstName,
+ActorLastName AS LastName,
+CharacterName AS CharacterName,
+Title as MovieTitle
+FROM Actors, Movies,Characters
+WHERE  Movies.MovieID = Characters.MovieID
+AND Characters.ActorID = Actors.ActorID
+Order by CharacterName desc
+;
+SELECT *FROM ActorMovie;
+
+
+
+
+CREATE VIEW GenreMovie AS 
+SELECT 
+GenreName AS MovieType,
+Title AS MovieTitle
+FROM Genre, Movies,MovieGenre
+WHERE  Movies.MovieID = MovieGenre.MovieID
+AND MovieGenre.GenreID = Genre.GenreID
+order by Title desc;
+SELECT *FROM GenreMovie;
+
+
+
+
+CREATE VIEW CompanyMoney AS 
+SELECT 
+Company.CompanyID as CompanyID,
+CompanyName AS Company,
+AVG(Gross) AS AvgGross
+FROM Company, Movies,CompanyMovie
+WHERE  Movies.MovieID = CompanyMovie.MovieID
+AND CompanyMovie.CompanyID = Company.CompanyID
+Group by CompanyName 
+order by AVG(Gross) desc;
+SELECT *FROM CompanyMoney;
+
+
+
+
+CREATE VIEW GenreMoney AS 
+SELECT 
+GenreName AS MovieType,
+Avg(Gross) AS AvgGross
+FROM Genre, Movies,MovieGenre
+WHERE  Movies.MovieID = MovieGenre.MovieID
+AND MovieGenre.GenreID = Genre.GenreID
+Group by GenreName 
+order by Avg(Gross) desc;
+SELECT *FROM GenreMoney;
+
+
+
+
+CREATE VIEW GenreCompany AS 
+SELECT 
+GenreName AS MovieType,
+Title AS MovieName,
+CompanyName as Company
+FROM Genre, Movies,MovieGenre, Company, CompanyMovie
+WHERE  Movies.MovieID = MovieGenre.MovieID
+AND MovieGenre.GenreID = Genre.GenreID
+AND Movies.MovieID = CompanyMovie.MovieID
+AND CompanyMovie.CompanyID = Company.CompanyID;
+SELECT *FROM GenreCompany;
+
+
+
+// SQL for php file
+
+$q = "SELECT 
+CONCAT(DFirstName, ', ', DLastName) AS Name,
+Title AS MovieTitle,
+Gender AS gender
+FROM Director, Movies,DirectorMovie
+WHERE  DirectorMovie.MovieID = Movies.MovieID
+AND Director.DirectorID = DirectorMovie.DirectorID
+AND DFirstName = '$fn' AND
+DLastName = '$fn2'"
+
+$q = "SELECT 
+DFirstName as FirstName,
+DLastName AS LastName,
+Gender as gender
+FROM Director WHERE
+DFirstName like '%$fn%'
+OR DLastName like  '%$fn%'"
+
+
+$q = "SELECT 
+			Title as MovieName,
+			Gross AS GrossRevenue,
+			Runtime as Duration
+			FROM Movies";
+$q = "SELECT 
+			Title as MovieName,
+			Gross AS GrossRevenue,
+			Runtime as Duration
+			FROM Movies WHERE
+			Gross >= $fn2"
+
+$q = "SELECT 
+			Title as MovieName,
+			Gross AS GrossRevenue,
+			Runtime as Duration
+			FROM Movies WHERE
+			Title like '%$fn%'";
+
+$q = "SELECT 
+			Title as MovieName,
+			Gross AS GrossRevenue,
+			Runtime as Duration
+			FROM Movies WHERE
+			Title like '%$fn%'
+			AND Gross >= $fn2 ";
+
+ $q = "SELECT 
+      GenreName AS MovieType,
+      Title AS MovieName,
+      CompanyName as Company
+      FROM Genre, Movies,MovieGenre, Company, CompanyMovie
+      WHERE  Movies.MovieID = MovieGenre.MovieID
+      AND MovieGenre.GenreID = Genre.GenreID
+      AND Movies.MovieID = CompanyMovie.MovieID
+      AND CompanyMovie.CompanyID = Company.CompanyID";
+
+$q = "SELECT 
+      GenreName AS MovieType,
+      Title AS MovieName,
+      CompanyName as Company
+      FROM Genre, Movies,MovieGenre, Company, CompanyMovie
+      WHERE  Movies.MovieID = MovieGenre.MovieID
+      AND MovieGenre.GenreID = Genre.GenreID
+      AND Movies.MovieID = CompanyMovie.MovieID
+      AND CompanyMovie.CompanyID = Company.CompanyID
+      AND GenreName = '$fn2'";
+
+ $q = "SELECT 
+      GenreName AS MovieType,
+      Title AS MovieName,
+      CompanyName as Company
+      FROM Genre, Movies,MovieGenre, Company, CompanyMovie
+      WHERE  Movies.MovieID = MovieGenre.MovieID
+      AND MovieGenre.GenreID = Genre.GenreID
+      AND Movies.MovieID = CompanyMovie.MovieID
+      AND CompanyMovie.CompanyID = Company.CompanyID
+      AND CompanyName like '%$fn%'";
+
+
+$q = "SELECT 
+      GenreName AS MovieType,
+      Title AS MovieName,
+      CompanyName as Company
+      FROM Genre, Movies,MovieGenre, Company, CompanyMovie
+      WHERE  Movies.MovieID = MovieGenre.MovieID
+      AND MovieGenre.GenreID = Genre.GenreID
+      AND Movies.MovieID = CompanyMovie.MovieID
+      AND CompanyMovie.CompanyID = Company.CompanyID
+      AND CompanyName like '%$fn%'
+      AND GenreName = '$fn2'";
+
+$q = "SELECT CONCAT(ActorFirstName, ', ', ActorLastName) AS Name, CharacterName, Title FROM Actors, Movies,Characters 
+			where Movies.MovieID = Characters.MovieID AND
+ 			Characters.ActorID = Actors.ActorID AND
+ 			ActorFirstName = '$fn'
+ 			Order by CharacterName desc";
+
+$q = "SELECT CONCAT(ActorFirstName, ', ', ActorLastName) AS Name, CharacterName, Title FROM Actors, Movies,Characters 
+			where Movies.MovieID = Characters.MovieID AND
+ 			Characters.ActorID = Actors.ActorID AND
+ 			ActorLastName = '$fn'
+ 			Order by CharacterName desc";	
